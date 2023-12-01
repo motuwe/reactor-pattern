@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(reactor)
+
+set(SOURCES reactor.cc)
+
+include(CheckSymbolExists)
+
+check_symbol_exists(epoll_create "sys/epoll.h" HAVE_EPOLL)
+check_symbol_exists(poll "sys/poll.h" HAVE_POLL)
+
+if (HAVE_EPOLL)
+    add_definitions(-DHAVE_EPOLL)
+endif()
+
+if (HAVE_POLL)
+    add_definitions(-DHAVE_POLL)
+endif()
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+install(FILES reactor.h DESTINATION include/reactor)
+install(TARGETS reactor LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
+
+add_subdirectory(examples)

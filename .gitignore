@@ -1,0 +1,5 @@
+# vscode ignores
+.vscode
+
+# cmake ignores
+build
